@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!--Material Icons CSS-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!--Jquery minified CDN-->
+    <script src="https://code.jquery.com/jquery-3.4.0.min.js"
+            integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"></script>
+
+    <title>{{title}}</title>
+
+    <style>
+    ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+    }
+
+    li {
+    float: left;
+    }
+
+    li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    }
+
+    li a:hover {
+    background-color: #111;
+    }
+
+    </style>
+</head>
+
+<body class="">
+
+<ul>
+    <li><a class="active" href="{% url 'index' %}">Home</a></li>
+    <li><a href="{% url 'analyze' %}">Analyze</a></li>
+</ul>
+
+{% block content %}
+{% endblock %}
+
+{% if messages %}
+<div id="modal1" class="modal">
+    <div class="modal-content">
+        {% for message in messages %}
+        <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-black btn-flat">Ok</a>
+    </div>
+</div>
+{% endif %}
+
+</body>
+
+{% if messages %}
+<script>
+    const elem = document.getElementById('modal1');
+    const instance = M.Modal.init(elem, { dismissible: false });
+    instance.open();
+
+
+</script>
+{% endif %}
+
+</html>

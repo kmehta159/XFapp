@@ -1,0 +1,15 @@
+{% extends "basic.html" %}
+
+{% block body %}
+<div class="row">
+    <div class="col s6 offset-s3">
+        <h2>Select the files to analyze.</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="submit" value="Analyze">
+        </form>
+
+    </div>
+</div>
+{% endblock %}

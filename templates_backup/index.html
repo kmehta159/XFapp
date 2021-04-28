@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col s6 offset-s3">
+        <h2>Upload file to store in database</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="submit" value="Upload">
+        </form>
+
+    </div>
+</div>
+{% endblock %}
