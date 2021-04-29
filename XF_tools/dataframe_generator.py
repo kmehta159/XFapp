@@ -35,7 +35,7 @@ def generate_from_file(data_file):
     instrument = assay_config.iloc[25,1]
     instrument_number = assay_config.iloc[36, 1]
 
-    if instrument[0] == "W":
+    if instrument[0] == "W" and instrument_number[:2] == '41':
         inst_type = 'XFe96'
     elif instrument[0] == "B":
         inst_type = 'XFe24'
@@ -43,6 +43,8 @@ def generate_from_file(data_file):
         inst_type = 'XFp'
     elif instrument[0] == "C" and instrument_number[:4] == '0044':
         inst_type = 'HSmini'
+    elif instrument[0] == "W" and instrument_number[:4] == '0045':
+        inst_type = 'Pro'
     else:
         inst_type = 'Unknown'
 
@@ -62,7 +64,8 @@ def generate_from_file(data_file):
     data_rate["Time"] = pd.to_datetime(data_rate['datetime']).dt.time
 
     data_raw = pd.read_excel(data_file, 'Raw')
-    data_raw['Env. Temperature'] = data_raw['Manif. Temperature'].round(decimals=2)
+
+    data_raw['Env. Temperature'] = data_raw['Env. Temperature'].round(decimals=2)
     data_raw['Well Temperature'] = data_raw['Well Temperature'].round(decimals=2)
     data_raw['O2 (mmHg)'] = data_raw['O2 (mmHg)'].round(decimals=2)
     data_raw['O2 Corrected Em.'] = data_raw['O2 Corrected Em.'].round(decimals=2)
