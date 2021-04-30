@@ -62,7 +62,7 @@ def generate_from_file(data_file):
     data_rate["Time"] = pd.to_datetime(data_rate['datetime']).dt.time
 
     data_raw = pd.read_excel(data_file, 'Raw')
-    data_raw['Env. Temperature'] = data_raw['Manif. Temperature'].round(decimals=2)
+    data_raw['Env. Temperature'] = data_raw['Env. Temperature'].round(decimals=2)
     data_raw['Well Temperature'] = data_raw['Well Temperature'].round(decimals=2)
     data_raw['O2 (mmHg)'] = data_raw['O2 (mmHg)'].round(decimals=2)
     data_raw['O2 Corrected Em.'] = data_raw['O2 Corrected Em.'].round(decimals=2)
