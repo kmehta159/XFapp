@@ -68,11 +68,11 @@ def analyze_files(request):
         dataframe_generator.delete_folder_contents(MEDIA_ROOT)
         if values['inst_type'] == 'XFp':
             return render(request, 'analysis_results_xfp.html', values)
-        if values['inst_type'] == 'XFe24':
+        elif values['inst_type'] == 'XFe24':
             return render(request, 'analysis_results_xfe24.html', values)
-        if values['inst_type'] == 'XFe96':
+        elif values['inst_type'] == 'XFe96':
             return render(request, 'analysis_results_xfe96.html', values)
-        if values['inst_type'] == 'HSmini':
+        elif values['inst_type'] == 'HSmini':
             return render(request, 'analysis_results_hsmini.html', values)
         else:
             return render(request, 'analysis_results.html', values)
