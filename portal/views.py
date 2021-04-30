@@ -66,10 +66,16 @@ def analyze_files(request):
         values = analyze.IQC_auto_analyze(df_rate, df_raw, df_cal)
         values = analyze.IQC_evaluate_result(values)
         dataframe_generator.delete_folder_contents(MEDIA_ROOT)
+        if values['inst_type'] == 'XFp':
+            return render(request, 'analysis_results_xfp.html', values)
+        if values['inst_type'] == 'XFe24':
+            return render(request, 'analysis_results_xfe24.html', values)
         if values['inst_type'] == 'XFe96':
-            return render(request, 'analysis_results.html', values)
-        else:
+            return render(request, 'analysis_results_xfe96.html', values)
+        if values['inst_type'] == 'HSmini':
             return render(request, 'analysis_results_hsmini.html', values)
+        else:
+            return render(request, 'analysis_results.html', values)
         # form = forms.FileUploadForm()
     else:
         form = forms.FileUploadForm()

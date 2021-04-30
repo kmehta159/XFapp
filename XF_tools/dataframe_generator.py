@@ -35,7 +35,7 @@ def generate_from_file(data_file):
     instrument = assay_config.iloc[25,1]
     instrument_number = assay_config.iloc[36, 1]
 
-    if instrument[0] == "W" and instrument_number[:2] == '41':
+    if instrument[0] == "W" and [instrument_number[:2] == '41' or instrument_number[:4] == '0041']:
         inst_type = 'XFe96'
     elif instrument[0] == "B":
         inst_type = 'XFe24'
