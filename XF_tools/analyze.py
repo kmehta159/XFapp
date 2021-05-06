@@ -173,55 +173,60 @@ def IQC_auto_analyze(df_rate, df_raw, df_cal):
 
     # Long Baseline- level data analysis
     # subsetting df for starting level (tick 0)
-    LB_raw_tick0 = LB_raw.loc[(LB_raw["Tick"] == 0) & (LB_raw["Group"] != "Background")]
+
+    # LB_raw_tick0 = LB_raw.loc[(LB_raw["Tick"] == 0) & (LB_raw["Group"] != "Background")]
+    LB_raw_meas3 = LB_raw.loc[(LB_raw["Measurement"] == 3) & (LB_raw["Group"] != "Background")]
+    LB_raw_meas3_first_tick = LB_raw_meas3.loc[LB_raw_meas3["Tick"] == LB_raw_meas3["Tick"].min()]
 
     # o2 analysis
-    lb_o2_low_limit = LB_raw_tick0["O2 (mmHg)"].median() - 10
-    lb_o2_high_limit = LB_raw_tick0["O2 (mmHg)"].median() + 10
-    lb_min_o2 = LB_raw_tick0.loc[(LB_raw_tick0["O2 (mmHg)"] >= lb_o2_low_limit) & (
-                LB_raw_tick0["O2 (mmHg)"] <= lb_o2_high_limit), "O2 (mmHg)"].min()
-    lb_max_o2 = LB_raw_tick0.loc[(LB_raw_tick0["O2 (mmHg)"] >= lb_o2_low_limit) & (
-                LB_raw_tick0["O2 (mmHg)"] <= lb_o2_high_limit), "O2 (mmHg)"].max()
+    lb_o2_low_limit = LB_raw_meas3_first_tick["O2 (mmHg)"].median() - 10
+    lb_o2_high_limit = LB_raw_meas3_first_tick["O2 (mmHg)"].median() + 10
+    lb_min_o2 = LB_raw_meas3_first_tick.loc[(LB_raw_meas3_first_tick["O2 (mmHg)"] >= lb_o2_low_limit) & (
+                LB_raw_meas3_first_tick["O2 (mmHg)"] <= lb_o2_high_limit), "O2 (mmHg)"].min()
+    lb_max_o2 = LB_raw_meas3_first_tick.loc[(LB_raw_meas3_first_tick["O2 (mmHg)"] >= lb_o2_low_limit) & (
+                LB_raw_meas3_first_tick["O2 (mmHg)"] <= lb_o2_high_limit), "O2 (mmHg)"].max()
     lb_o2_range = (lb_min_o2, lb_max_o2)
-    lb_o2_outliers = LB_raw_tick0.loc[
-        (LB_raw_tick0["O2 (mmHg)"] < lb_min_o2) | (LB_raw_tick0["O2 (mmHg)"] > lb_max_o2), "Well"].unique()
+    lb_o2_outliers = LB_raw_meas3_first_tick.loc[
+        (LB_raw_meas3_first_tick["O2 (mmHg)"] < lb_min_o2) | (LB_raw_meas3_first_tick["O2 (mmHg)"] > lb_max_o2), "Well"].unique()
 
     # pH analysis
-    lb_ph_low_limit = LB_raw_tick0["pH"].median() - 0.1
-    lb_ph_high_limit = LB_raw_tick0["pH"].median() + 0.1
-    lb_min_ph = LB_raw_tick0.loc[
-        (LB_raw_tick0["pH"] >= lb_ph_low_limit) & (LB_raw_tick0["pH"] <= lb_ph_high_limit), "pH"].min()
-    lb_max_ph = LB_raw_tick0.loc[
-        (LB_raw_tick0["pH"] >= lb_ph_low_limit) & (LB_raw_tick0["pH"] <= lb_ph_high_limit), "pH"].max()
+    lb_ph_low_limit = LB_raw_meas3_first_tick["pH"].median() - 0.1
+    lb_ph_high_limit = LB_raw_meas3_first_tick["pH"].median() + 0.1
+    lb_min_ph = LB_raw_meas3_first_tick.loc[
+        (LB_raw_meas3_first_tick["pH"] >= lb_ph_low_limit) & (LB_raw_meas3_first_tick["pH"] <= lb_ph_high_limit), "pH"].min()
+    lb_max_ph = LB_raw_meas3_first_tick.loc[
+        (LB_raw_meas3_first_tick["pH"] >= lb_ph_low_limit) & (LB_raw_meas3_first_tick["pH"] <= lb_ph_high_limit), "pH"].max()
     lb_ph_range = (lb_min_ph, lb_max_ph)
-    lb_ph_outliers = LB_raw_tick0.loc[
-        (LB_raw_tick0["pH"] < lb_min_ph) | (LB_raw_tick0["pH"] > lb_max_ph), "Well"].unique()
+    lb_ph_outliers = LB_raw_meas3_first_tick.loc[
+        (LB_raw_meas3_first_tick["pH"] < lb_min_ph) | (LB_raw_meas3_first_tick["pH"] > lb_max_ph), "Well"].unique()
 
     # Stress Test- level data analysis
     # subsetting df for starting level (tick 0)
-    ST_raw_tick0 = ST_raw.loc[(ST_raw["Tick"] == 0) & (ST_raw["Group"] != "Background")]
-
+    #
+    # ST_raw_tick0 = ST_raw.loc[(ST_raw["Tick"] == 0) & (ST_raw["Group"] != "Background")]
+    ST_raw_meas3 = ST_raw.loc[(ST_raw["Measurement"] == 3) & (ST_raw["Group"] != "Background")]
+    ST_raw_meas3_first_tick = ST_raw_meas3.loc[ST_raw_meas3["Tick"] == ST_raw_meas3["Tick"].min()]
     # o2 analysis
-    st_o2_low_limit = ST_raw_tick0["O2 (mmHg)"].median() - 10
-    st_o2_high_limit = ST_raw_tick0["O2 (mmHg)"].median() + 10
-    st_min_o2 = ST_raw_tick0.loc[(ST_raw_tick0["O2 (mmHg)"] >= st_o2_low_limit) & (
-                ST_raw_tick0["O2 (mmHg)"] <= st_o2_high_limit), "O2 (mmHg)"].min()
-    st_max_o2 = ST_raw_tick0.loc[(ST_raw_tick0["O2 (mmHg)"] >= st_o2_low_limit) & (
-                ST_raw_tick0["O2 (mmHg)"] <= st_o2_high_limit), "O2 (mmHg)"].max()
+    st_o2_low_limit = ST_raw_meas3_first_tick["O2 (mmHg)"].median() - 10
+    st_o2_high_limit = ST_raw_meas3_first_tick["O2 (mmHg)"].median() + 10
+    st_min_o2 = ST_raw_meas3_first_tick.loc[(ST_raw_meas3_first_tick["O2 (mmHg)"] >= st_o2_low_limit) & (
+                ST_raw_meas3_first_tick["O2 (mmHg)"] <= st_o2_high_limit), "O2 (mmHg)"].min()
+    st_max_o2 = ST_raw_meas3_first_tick.loc[(ST_raw_meas3_first_tick["O2 (mmHg)"] >= st_o2_low_limit) & (
+                ST_raw_meas3_first_tick["O2 (mmHg)"] <= st_o2_high_limit), "O2 (mmHg)"].max()
     st_o2_range = (st_min_o2, st_max_o2)
-    st_o2_outliers = ST_raw_tick0.loc[
-        (ST_raw_tick0["O2 (mmHg)"] < st_min_o2) | (ST_raw_tick0["O2 (mmHg)"] > st_max_o2), "Well"].unique()
+    st_o2_outliers = ST_raw_meas3_first_tick.loc[
+        (ST_raw_meas3_first_tick["O2 (mmHg)"] < st_min_o2) | (ST_raw_meas3_first_tick["O2 (mmHg)"] > st_max_o2), "Well"].unique()
 
     # pH analysis
-    st_ph_low_limit = ST_raw_tick0["pH"].median() - 0.1
-    st_ph_high_limit = ST_raw_tick0["pH"].median() + 0.1
-    st_min_ph = ST_raw_tick0.loc[
-        (ST_raw_tick0["pH"] >= st_ph_low_limit) & (ST_raw_tick0["pH"] <= st_ph_high_limit), "pH"].min()
-    st_max_ph = ST_raw_tick0.loc[
-        (ST_raw_tick0["pH"] >= st_ph_low_limit) & (ST_raw_tick0["pH"] <= st_ph_high_limit), "pH"].max()
+    st_ph_low_limit = ST_raw_meas3_first_tick["pH"].median() - 0.1
+    st_ph_high_limit = ST_raw_meas3_first_tick["pH"].median() + 0.1
+    st_min_ph = ST_raw_meas3_first_tick.loc[
+        (ST_raw_meas3_first_tick["pH"] >= st_ph_low_limit) & (ST_raw_meas3_first_tick["pH"] <= st_ph_high_limit), "pH"].min()
+    st_max_ph = ST_raw_meas3_first_tick.loc[
+        (ST_raw_meas3_first_tick["pH"] >= st_ph_low_limit) & (ST_raw_meas3_first_tick["pH"] <= st_ph_high_limit), "pH"].max()
     st_ph_range = (st_min_ph, st_max_ph)
-    st_ph_outliers = ST_raw_tick0.loc[
-        (ST_raw_tick0["pH"] < st_min_ph) | (ST_raw_tick0["pH"] > st_max_ph), "Well"].unique()
+    st_ph_outliers = ST_raw_meas3_first_tick.loc[
+        (ST_raw_meas3_first_tick["pH"] < st_min_ph) | (ST_raw_meas3_first_tick["pH"] > st_max_ph), "Well"].unique()
 
     mr_filename = MR_cal['Filename'].unique()
     lb_filename = LB_cal['Filename'].unique()
