@@ -6,7 +6,7 @@ from django.core.files.storage import FileSystemStorage
 from django.contrib.messages.views import SuccessMessageMixin
 from base.settings import MEDIA_ROOT
 from . import forms
-from XF_tools import dataframe_generator, analyze
+from XF_tools import dataframe_generator, analyze, metro_tools
 from django.http import HttpResponse
 from .models import xftool
 from math import ceil
@@ -80,6 +80,37 @@ def analyze_files(request):
     else:
         form = forms.FileUploadForm()
     return render(request, 'analyze.html', {'form': form})
+
+class metro_upload(SuccessMessageMixin, FormView):
+    extra_context = {
+        'title': 'Data Upload Portal for Metrology'
+    }
+    form_class = forms.FileUploadForm
+    template_name = 'metrology.html'
+    success_url = reverse_lazy('metrology')
+    success_message = None
+
+    def post(self, request, *args, **kwargs):
+        self.files = request.FILES.getlist("data_file")
+        fs = FileSystemStorage()
+        for _file in self.files:
+            fs.save(_file.name, _file)
+        try:
+            metro_tools.process_cmm_file(MEDIA_ROOT)
+        except Exception as e:
+            self.success_message = str(e)
+        metro_tools.delete_folder_contents(MEDIA_ROOT)
+        return super().post(request, *args, **kwargs)
+
+    def get_success_message(self, cleaned_data):
+        if not self.success_message:
+            file_list = ', '.join(map(lambda x: x.name, self.files))
+            return "The files {} were uploaded successfully".format(file_list)
+        else :
+            return self.success_message
+
+
+
 
 def iqc(request):
     return HttpResponse("we are at IQC")

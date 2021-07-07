@@ -1,0 +1,39 @@
+{% extends "basic.html" %}
+
+{% block body %}
+<div class="row">
+    <div class="col s6 offset-s3">
+        <h2>Upload cmm file to store in database</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="submit" value="metro_upload">
+        </form>
+
+    </div>
+</div>
+
+{% if messages %}
+<div id="modal1" class="modal">
+    <div class="modal-content">
+        {% for message in messages %}
+        <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-black btn-flat">Ok</a>
+    </div>
+</div>
+{% endif %}
+
+{% if messages %}
+<script>
+    const elem = document.getElementById('modal1');
+    const instance = M.Modal.init(elem, { dismissible: false });
+    instance.open();
+
+
+</script>
+{% endif %}
+
+{% endblock %}

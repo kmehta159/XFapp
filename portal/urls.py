@@ -9,6 +9,7 @@ urlpatterns = [
     path('analyze/', views.analyze_files, name='analyze'),
     path('Instrument QC/', views.iqc, name='IQC'),
     path('Cartridge QC/', views.cqc, name='CQC'),
+    path('metrology/', views.metro_upload.as_view(), name='metrology'),
     path('documents/', views.documents, name='documents'),
     path('about/', views.about, name='about')
 ]
