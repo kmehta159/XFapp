@@ -1,13 +1,13 @@
 {% extends "basic.html" %}
 
 {% block body %}
-<div class="row">
+<div class="row" style="padding:20px">
     <div class="col s6 offset-s3">
-        <h2>Upload cmm file to store in database</h2>
+        <h2>Upload CMM result files for Strips measurement</h2>
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {{form.as_p}}
-            <input type="submit" value="metro_upload">
+            <input type="submit" value="upload">
         </form>
 
     </div>
