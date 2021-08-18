@@ -57,6 +57,8 @@ def generate_from_file(data_file):
     data_rate["Instrument No"] = instrument_number
     data_rate["Cartridge Lot"] = assay_config.iloc[27, 1]
     data_rate["Cartridge Serial"] = assay_config.iloc[26, 1]
+    data_rate["Plate Lot"] = assay_config.iloc[33, 1]
+    data_rate["Plate Serial"] = assay_config.iloc[32, 1]
     data_rate["Software version"] = assay_config.columns[1]
     data_rate["Instrument Type"] = inst_type
     data_rate["datetime"] = assay_config.iloc[22, 1]
@@ -76,6 +78,8 @@ def generate_from_file(data_file):
     data_raw["Instrument No"] = assay_config.iloc[36, 1]
     data_raw["Cartridge Lot"] = assay_config.iloc[27, 1]
     data_raw["Cartridge Serial"] = assay_config.iloc[26, 1]
+    data_raw["Plate Lot"] = assay_config.iloc[33, 1]
+    data_raw["Plate Serial"] = assay_config.iloc[32, 1]
     data_raw["Software version"] = assay_config.columns[1]
     data_raw["Instrument Type"] = inst_type
     data_raw["datetime"] = assay_config.iloc[22, 1]
@@ -146,6 +150,8 @@ def generate_from_file(data_file):
     data_cal1["Instrument No"] = assay_config.iloc[36, 1]
     data_cal1["Cartridge Lot"] = assay_config.iloc[27, 1]
     data_cal1["Cartridge Serial"] = assay_config.iloc[26, 1]
+    data_cal1["Plate Lot"] = assay_config.iloc[33, 1]
+    data_cal1["Plate Serial"] = assay_config.iloc[32, 1]
     data_cal1["Software version"] = assay_config.columns[1]
     data_cal1["Instrument Type"] = inst_type
     data_cal1["datetime"] = assay_config.iloc[22, 1]
@@ -157,7 +163,7 @@ def generate_from_file(data_file):
     df_cal = df_cal.append(data_cal1, sort=True)
 
     # droping extra columns
-    df_rate = df_rate.drop(["datetime", "PER"], axis=1)
+    df_rate = df_rate.drop(["datetime", "PER",'ECAR (mpH/min)','OCR (pmol/min)','PER (pmol/min)'], axis=1)
     df_raw = df_raw.drop(["datetime", "O2 is Valid", "pH Is Valid"], axis=1)
     df_cal = df_cal.drop(["datetime"], axis=1)
 
@@ -201,11 +207,15 @@ def process_asyr_file(asyr_files):
 
     #select xlsx files
     files = absfilepath(xlsx_files)
-    engine = create_engine('mysql+pymysql://root:Quality123@localhost/instrumentqc')
+    engine = create_engine('mysql+pymysql://agilent:agilent@supercomputer/iqc')
 
     for data_file in files:
         print(f'Processing {data_file} ...',)
         df_rate, df_raw, df_cal = generate_from_file(data_file)
+        # df_rate.to_csv('Rates.csv', index=False)
+        # df_raw.to_csv('Raw.csv', index=False)
+        # df_cal.to_csv('Cal.csv', index=False)
+
         df_rate.to_sql('iqc_rates', con=engine, if_exists='append', index=False)
         df_raw.to_sql('iqc_raw', con=engine, if_exists='append', index=False)
         df_cal.to_sql('iqc_cal', con=engine, if_exists='append', index=False)
