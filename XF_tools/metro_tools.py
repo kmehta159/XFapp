@@ -50,7 +50,7 @@ def process_cmm_file(data_files):
 
     # select xlsx files
     files = absfilepath(data_files)
-    files_xlsx = [f for f in files if f[-4:] == 'xlsx' or f[-3:] == 'xls' and os.path.basename(f) not in old_files]
+    files_xlsx = [f for f in files if f[-4:] == 'xlsx' or f[-3:] == 'xls' and os.path.basename(f).split('.')[0] not in old_files]
     for data_file in files_xlsx:
         print(f'Processing {data_file} ...', )
         data_cmm = generate_cmm_result(data_file)
