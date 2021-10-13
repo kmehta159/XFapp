@@ -117,8 +117,10 @@ USE_TZ = True
 
 # Static file directories
 # https://docs.djangoproject.com/en/2.2/ref/settings/#std:setting-STATICFILES_DIRS
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'portal/static'),
 ]
 
 
