@@ -19,6 +19,7 @@ def convert_asyr_file(asyr_files):
                 os.rename(entry, pre + ".asyr")
     #convert .asyr to .xlsx
     print("Converting asyr to xlsx.")
+    print(asyr_files)
     xlsx_files = os.path.join(asyr_files, 'xlsx_output')
     Asyr_to_xlsx = subprocess.check_output(
         ['C:\Program Files (x86)\Agilent Technologies\Wave Pro\MassAssayExporter.exe',
